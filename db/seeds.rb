@@ -5,3 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+
+#recreate roles to avoid adding
+Role.all.each do |role|
+	role.destroy
+end
+
+Role.create(:level => "limited") #out dated users
+Role.create(:level => "standard") #most users are this when created
+Role.create(:level => "admin") #admins only

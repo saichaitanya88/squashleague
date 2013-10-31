@@ -11,14 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131031011224) do
-
-  create_table "passwords", force: true do |t|
-    t.string   "password_digest"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(version: 20131031032101) do
 
   create_table "roles", force: true do |t|
     t.string   "level"
@@ -27,13 +20,16 @@ ActiveRecord::Schema.define(version: 20131031011224) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "username"
+    t.string   "name"
     t.string   "email"
-    t.integer  "player_id"
-    t.integer  "password_id"
+    t.string   "password_digest"
+    t.string   "remember_token"
+    t.integer  "role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
 
   create_table "users_to_roles", force: true do |t|
     t.string   "user_id"

@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  username: MyString
+  login: MyString
   email: MyString
-  player_id: 1
-  password_id: 1
+  password_digest: MyString
+  remember_token: MyString
+  role_id: 1
 
 two:
-  username: MyString
+  login: MyString
   email: MyString
-  player_id: 1
-  password_id: 1
+  password_digest: MyString
+  remember_token: MyString
+  role_id: 1
