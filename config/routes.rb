@@ -1,12 +1,17 @@
 SquashLeague::Application.routes.draw do
   get "users/login"
+  post "users/create"
+  
   get "league/home"
   get "league/players"
   get "league/schedule"
   get "league/player_history"
   get "league/history"
+  
 	root  'home#index'
 	match '/news', to: 'home#news', via: 'get'
+	match '/signup', to: 'users#signup', via: 'get'
+	match '/login', to: 'users#login', via: 'get'
   get "home/index"
   get "home/news"
   # The priority is based upon order of creation: first created -> highest priority.

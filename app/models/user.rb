@@ -12,5 +12,5 @@ class User < ActiveRecord::Base
 	#allows bcrypt to do it's magic
 	has_secure_password
 	
-	validates :password, length { minimum: 10 }
+	validates :password, length: { minimum: 10 }
 end
