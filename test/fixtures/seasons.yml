@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  season_name: MyString
+  season_winner: 1
+  season_status: MyString
+  season_start: 2013-11-01
+  season_end: 2013-11-01
+  matches_per_player_pair: 1
+
+two:
+  season_name: MyString
+  season_winner: 1
+  season_status: MyString
+  season_start: 2013-11-01
+  season_end: 2013-11-01
+  matches_per_player_pair: 1

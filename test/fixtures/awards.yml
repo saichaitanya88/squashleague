@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  status: MyString
+  award_name: MyString
+  award_description: MyString
+
+two:
+  status: MyString
+  award_name: MyString
+  award_description: MyString

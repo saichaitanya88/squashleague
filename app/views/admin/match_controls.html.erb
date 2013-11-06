@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Match Controls for <b><%= @season.season_name %></b></h3>
+    <i>List of matches in current season, user can click which one to update. next view should open matches and games that can be edited.</i>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+    	<thead>
+    		<tr>
+    			<th>Match ID</th>
+    			<th>Player 1</th>
+    			<th>Player 2</th>
+    			<th>Winner</th>
+    			<th>Status</th>
+    			<th>Round</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+    		<% @matches.each do |match| %>
+    			<tr>
+    				<td><%= link_to match.id, match_show_path(:id => match.id) %></td>
+    				<td><%= match.player_full_name(match.player1_id) %></td>
+    				<td><%= match.player_full_name(match.player2_id) %></td>
+    				<td><%= match.player_full_name(match.winner_id) %></td>
+    				<td><%= match.status %></td>
+    				<td><%= match.round_name %></td>
+    			</tr>
+    		<% end %>
+    	</tbody>
+    </table>
+  </div>
+</div>

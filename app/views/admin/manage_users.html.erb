@@ -1,0 +1,63 @@
+<script src="/assets/admin.js" type="text/javascript"></script>
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Manage Users</h3>
+    <i>
+			This is used to manage players.
+			<br/>
+			Page loads list of players. Admin selects the User to modify. User to Player link is created here.
+			<br/>
+			Javascript populates user information into the form. User makes the modification and POSTS update.
+    </i>
+  </div>
+  <div class="panel-body">
+		<div class="row">
+			<div class="col-md-2">
+				<ul class="nav nav-pills nav-stacked">
+				<% @users.each do |user| %>
+					<li>
+						<a href="#" onclick="retrieve_user('<%= user.id %>')"><%= user.name %></a>
+					</li>
+				<% end %>
+				</ul>
+			</div>
+			<div class="col-md-10">
+				<%= form_for(:user, :url => url_for(:action => "manage_user"), :html => {:class => "form-horizontal"}) do |f| %>
+
+					<%= f.hidden_field :id %>
+
+					<div class="form-group">
+						<label class="control-label col-md-1">Name</label>
+						<div class="col-md-6">
+							<%= f.text_field(:name, :class=> "form-control") %>
+						</div>
+					</div>
+			
+					<div class="form-group">
+						<label class="control-label col-md-1">Player</label>
+						<div class="col-md-6">
+							<select name="user_player" id="user_player" class="form-control">
+								<option value="">----</option>
+								<% @players.each do |player| %>
+									<option user_id="<%= player.user_id %>" value="<%= player.id %>"><%= player.full_name %></option>
+								<% end %>
+							</select>
+						</div>
+					</div>
+			
+		
+					<div class="form-group">
+						<div class="col-md-offset-1 col-md-1">
+							<%= f.submit "Update", class: "btn btn-large btn-default" %>	
+						</div>
+					</div>
+				  
+				<% end %>
+			</div>
+		</div>
+  </div>
+</div>

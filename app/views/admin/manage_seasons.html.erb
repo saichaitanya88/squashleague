@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Manage Seasons</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+    	<thead>
+    		<tr>
+    			<th>Season Name</th>
+    			<th>Season Winner</th>
+    			<th>Season Start</th>
+    			<th>Season End</th>
+    			<th>Season Status</th>
+    			<th>MPPP</th>
+    			<th>Division</th>
+    			<th>Edit Matches</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+    		<% @seasons.each do |season| %>
+    		<tr>
+    			<td><%= season.season_name %></td>
+    			<td><%= season.winner_name %></td>
+    			<td><%= season.season_start %></td>
+    			<td><%= season.season_end %></td>
+    			<td><%= season.season_status %></td>
+    			<td><%= season.matches_per_player_pair %></td>
+    			<td><%= season.division_level %></td>
+    			<td><%= link_to "edit matches", admin_match_controls_path(:sid => season.id)%></td>
+    		</tr>
+    		<% end %>
+    	</tbody>
+    </table>
+  </div>
+</div>
+

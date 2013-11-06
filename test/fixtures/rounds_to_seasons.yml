@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  round_id: 1
+  season_id: 1
+  status: MyString
+
+two:
+  round_id: 1
+  season_id: 1
+  status: MyString

@@ -1,0 +1,75 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Panel title</h3>
+    <i>
+			Can create new season. 
+			Choose players that will be competing in the new season. 
+			Number of matches per player pair. 
+			Start and End dates for Players. 
+			Button to Generate new Season and Season Schedule.
+    </i>
+  </div>
+  <div class="panel-body">
+		<div class="row">
+				<%= form_for(:season, :url => url_for(:action => "create_season"), :html => {:class => "form-horizontal"}) do |f| %>
+				<div class="col-md-9">
+					<div class="form-group">
+						<label class="control-label col-md-3">Season Name</label>
+						<div class="col-md-6">
+							<%= f.text_field(:season_name, :class=>"form-control")%>
+						</div>
+					</div>
+		
+					<div class="form-group">
+						<label class="control-label col-md-3">Season Start</label>
+						<div class="col-md-6">
+							 <%= date_field(:season, :season_start, :class=>"form-control") %>
+						</div>
+					</div>
+		
+				<div class="form-group">
+						<label class="control-label col-md-3">Division</label>
+						<div class="col-md-6">
+							<select name="division_id" class="form-control">
+								<option value="">----</option>
+								<% @divisions.each do |division| %>
+									<option value="<%= division.id %>"><%= division.division_level %></option>
+								<% end %>
+							</select>
+						</div>
+					</div>
+		
+					<div class="form-group">
+						<label class="control-label col-md-3">Matches Per Player-Pair</label>
+						<div class="col-md-6">
+							<%= f.number_field(:matches_per_player_pair, :class=>"form-control") %>
+						</div>
+					</div>
+		
+					<div class="form-group">
+						<label class="control-label col-md-3">Grace Period in Weeks</label>
+						<div class="col-md-6">
+							<input type="number" class="form-control" name="grace_period" value="" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-1">
+							<%= f.submit "Create Season", class: "btn btn-large btn-default" %>	
+						</div>
+					</div>
+			</div>
+			<div class="col-md-3 form-horizontal">
+				<% @players.each do |player| %>
+					<div class="checkbox">
+						<label>
+							<input name="player_id[<%= player.id %>]" class="form-control" type="checkbox" value="<%= player.id %>" />
+							<%= player.full_name %>
+						</label>
+					</div>
+				<% end %>
+			</div>
+			<% end %>
+		</div>
+  </div>
+</div>

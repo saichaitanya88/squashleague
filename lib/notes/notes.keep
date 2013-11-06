@@ -1,0 +1,7 @@
+Valid Statuses are:
+	active
+	completed
+	abandoned
+	scheduled
+	inactive
+	locked (applies after player submits match scores, locked matches can be modified only by the admin)

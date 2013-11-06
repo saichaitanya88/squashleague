@@ -1,0 +1,68 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Edit Match for <b><%= @match.player_full_name(@match.player1_id) %></b> vs <b><%= @match.player_full_name(@match.player2_id) %></b> <%= @match.round_name %></h3>
+  </div>
+  <div class="panel-body">
+		<div class="row">
+			<%= form_for @match, :html => { :class => "form-horizontal" }, :url => url_for(:controller => "match", :action => "edit", :id  => @match.id) do |f| %>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Game Id</th>
+							<th><%= @match.player_full_name(@match.player1_id) %> Score</th>
+							<th><%= @match.player_full_name(@match.player2_id) %> Score</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<% (0..4).each do |i| %>
+							<tr>
+								<td>
+									<div class="checkbox">
+											<label>
+												<input type="checkbox" name="game_selected<%=[i]%>" /> Game <%= i+1 %>
+											</label>
+									</div>								
+								</td>
+								<td>
+									<select class="form-control" name="game_p1_score<%=[i]%>">
+										<% (0..21).each do |i| %>
+											<% if @games.nil? == false and @games[i].nil? == false %>
+													<% if @games[i].player1_score == i %>
+														<option value="<%=i%>" selected="selected"><%=i%></option>
+													<% else %>
+														<option value="<%=i%>"><%=i%></option>
+													<% end %>
+												<% else %>
+													<option value="<%=i%>"><%=i%></option>
+											<% end %>
+										<% end %>
+									</select>
+								</td>
+								<td>
+								<select class="form-control" name="game_p2_score<%=[i]%>">
+										<% (0..21).each do |i| %>
+											<% if @games.nil? == false and @games[i].nil? == false %>
+													<% if @games[i].player1_score == i %>
+														<option value="<%=i%>" selected="selected"><%=i%></option>
+													<% else %>
+														<option value="<%=i%>"><%=i%></option>
+													<% end %>
+												<% else %>
+													<option value="<%=i%>"><%=i%></option>
+											<% end %>
+										<% end %>
+									</select>
+								</td>
+								<td></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+					<% if @match.scheduled? && SessionsHelper.user_exists(cookies[:remember_token]) %>
+						<%= f.submit "Submit", class: "btn btn-large btn-default pull-right" %>	
+					<% end %>
+				<% end %>
+		</div>
+  </div>
+</div>

@@ -1,14 +1,55 @@
 1. Generate views and put summary in all the views/controllers
+	This includes Player and Admin Pages DONE
+		Player:
+			Update Match Scores for the player
+			Update Their User Information
+			Request Match Score Modification
+			
+		Admin:
+			Add and Update Players - DONE
+			Add Seasons, and Mark Current Season as COMPLETED
+				Adding Season starts schedule generator CURRENT
+			Modify Match Scores
+			Modify Game Scores
+			Update News
+			Add Awards to Player
+			***REFER TO NOTEBOOK***
 
-2. Create User sign up and auth stuff.
+
+2. Create User sign up and auth stuff. DONE
+	Set up Users with Roles with users are created. DONE
+	Set up User-Player associations. DONE
 
 3. start working on code to allow admin to do data manipulation.
+	Admin can CRUD players, seasons
+	Admin can Modify Matches and Games DONE
 
-4. 
+4. SEASON CREATION 
+	Add Divisions to Seasons. With additional Validation. DONE
+
+_______________________________________________
+
+1. Tidy up the process of saving match scores. Use Match->Games relationship.
+
+2. Allow Seasons to be viewed without being logged in. (if logged in as admin, render links to manage seasons)
+	Abandoned seasons can only be viewed by admin.
+	
+3. Allow matches to be viewed without being logged in.
+	if logged in, and the user is either player 1, 2 or admin, render "update scores button"
+	else render scores as labels rather than dropdowns. (utilize <% render {{VIEW}} %> to make it work for different modes
+	
+4. Testing process, clean up unused routes. Route to appropriate errors rather than crashing.
+	Hide "News" and "History items from League Table dropdown"
+	
+5. Views to allow users to see league table, and individual matches (without logging in), /match/show?id={id}
+
+6. Fix existing bugs, clean up CSS
+
+7. Review Validation for ALL FORM INPUTS AND DATABASE SAVE EVENTS
 
 
 
-
-Down the line:
-
-Awards page should have details about the award, and list of players when they got the award. 
+NEXT RELEASE
+Code Review and optimize
+Awards page should have details about the award, and list of players when they got the award. (Brainstorm award names)
+Module for News (allow html data to be entered, allow players, matches, seasons to be referenced using {{type=*type_id*}} which generates link_to's

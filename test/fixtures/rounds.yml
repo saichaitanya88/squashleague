@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  round_name: MyString
+  round_order: 1
+  round_start: 2013-11-01
+  round_end: 2013-11-01
+  status: MyString
+
+two:
+  round_name: MyString
+  round_order: 1
+  round_start: 2013-11-01
+  round_end: 2013-11-01
+  status: MyString
