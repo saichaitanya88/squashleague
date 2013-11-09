@@ -6,4 +6,9 @@ class Player < ActiveRecord::Base
 		return self.first_name + " " + self.last_name
 	end
 	
+	# takes the current season Id as input, returns the player_league information
+	def season_score
+	
+	end
+	
 end

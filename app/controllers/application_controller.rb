@@ -6,4 +6,5 @@ class ApplicationController < ActionController::Base
   #along with the remember_token, allows users to stay logged in until they choose to log out
   include SessionsHelper
   include AdminHelper
+  include LeagueHelper
 end

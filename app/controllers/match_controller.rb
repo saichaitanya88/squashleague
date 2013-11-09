@@ -45,7 +45,7 @@ class MatchController < ApplicationController
   	# if user's player is not player1 or player2, do not allow. unless user is admin
   	if success
 			if !SessionsHelper.is_admin?
-				if SessionsHelper.current_user.id != Player.find(match.player1_id).user_id || SessionsHelper.current_user.id != Player.find(match.player2_id).user_id
+				if SessionsHelper.get_current_user(cookies[:remember_token]).id != Player.find(match.player1_id).user_id && SessionsHelper.get_current_user(cookies[:remember_token]).id != Player.find(match.player2_id).user_id
 					success = false
 					flash[:error] = "You cannot update this match's scores"
 				end
@@ -94,7 +94,8 @@ class MatchController < ApplicationController
   	# 	if 1 game has a score greater than 11, then the second game has to be atleast 10.
   	# 	1 game has to be atleast equal to 11 
   	#	if all are true, then allow games to be saved.
-  	
+  	p1_tally = 0
+  	p2_tally = 0
   	if success
   		(0..4).each do |x|
   			if games_selected[x] == "on"
@@ -117,8 +118,31 @@ class MatchController < ApplicationController
  						flash[:error] = "Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores"
  						break
   				end
+  				if (p1_score > p2_score)
+	  				p1_tally = p1_tally + 1
+  				else
+	  				p2_tally = p2_tally + 1
+  				end
   			end
   		end
+  	end
+  	
+  	# p1 or p2 has to be == 3
+  	# p1 - p2 (abs) should not be greater than 3
+  	# p1 + p2 should be == 5 (max)
+
+  	if (p1_tally == p2_tally)
+  		success = false
+ 			flash[:error] = "Incorrect entry: game tally is invalid"
+ 		elsif (p1_tally + p2_tally) > 5
+  		success = false
+ 			flash[:error] = "Incorrect entry: game tally is invalid"
+  	elsif ((p1_tally - p2_tally).abs > 3)
+  		success = false
+ 			flash[:error] = "Incorrect entry: game tally is invalid"
+ 		elsif (p1_tally != 3 && p2_tally != 3)
+  		success = false
+ 			flash[:error] = "Incorrect entry: game tally is invalid"
   	end
   	
   	game_number = 1
@@ -143,9 +167,20 @@ class MatchController < ApplicationController
 	  		end
   		end
   		
+  		if (p1_tally > p2_tally)
+  			match.winner_id = match.player1_id
+  		else
+  			match.winner_id = match.player2_id
+  		end
   		match.status = "completed"
   	end
+  	if !success
+  		redirect_to "/match/show?id=#{params[:id]}"
+  	else
   	
-  	redirect_to "/match/show?id=3"
+  		season_id = RoundsToSeason.find_by_round_id(MatchesToRound.find_by_match_id(match.id).round_id).season_id
+  	
+  		redirect_to "/league/schedule?sid=#{season_id}"
+  	end
   end
 end

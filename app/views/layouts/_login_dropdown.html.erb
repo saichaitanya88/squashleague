@@ -2,7 +2,7 @@
 	<% if is_admin? %>
   	<li><%= link_to "Admin Dashboard", admin_admin_dashboard_path %></li>
   <% end %>
-  <li><%= link_to "User Dashboard", users_dashboard_main_path %></li>
+  <!--<li><%= link_to "User Dashboard", users_dashboard_main_path %></li>-->
   <li id="fat-menu" class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
       <%= @current_user.name %> <b class="caret"></b>

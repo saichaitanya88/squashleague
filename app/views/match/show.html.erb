@@ -26,30 +26,30 @@
 								</td>
 								<td>
 									<select class="form-control" name="game_p1_score<%=[i]%>">
-										<% (0..21).each do |i| %>
+										<% (0..21).each do |j| %>
 											<% if @games.nil? == false and @games[i].nil? == false %>
-													<% if @games[i].player1_score == i %>
-														<option value="<%=i%>" selected="selected"><%=i%></option>
+													<% if @games[i].player1_score == j %>
+														<option value="<%=j%>" selected><%=j%></option>
 													<% else %>
-														<option value="<%=i%>"><%=i%></option>
+														<option value="<%=j%>"><%=j%></option>
 													<% end %>
 												<% else %>
-													<option value="<%=i%>"><%=i%></option>
+													<option value="<%=j%>"><%=j%></option>
 											<% end %>
 										<% end %>
 									</select>
 								</td>
 								<td>
 								<select class="form-control" name="game_p2_score<%=[i]%>">
-										<% (0..21).each do |i| %>
+										<% (0..21).each do |j| %>
 											<% if @games.nil? == false and @games[i].nil? == false %>
-													<% if @games[i].player1_score == i %>
-														<option value="<%=i%>" selected="selected"><%=i%></option>
+													<% if @games[i].player2_score == j %>
+														<option value="<%=j%>" selected><%=j%></option>
 													<% else %>
-														<option value="<%=i%>"><%=i%></option>
+														<option value="<%=j%>"><%=j%></option>
 													<% end %>
 												<% else %>
-													<option value="<%=i%>"><%=i%></option>
+													<option value="<%=j%>"><%=j%></option>
 											<% end %>
 										<% end %>
 									</select>

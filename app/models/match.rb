@@ -23,4 +23,12 @@ class Match < ActiveRecord::Base
 		return false
 	end
 	
+	def get_winner_full_name
+		if (winner_id.nil?)
+			return ""
+		else
+			return Player.find(winner_id).full_name
+		end
+	end
+	
 end

@@ -1,4 +1,42 @@
-<h1>League#home</h1>
-<p>Find me in app/views/league/home.html.erb</p>
-
-Current league table will be here. Links to player pages from <strong>Player</strong> column.
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">League Table</h3>
+  </div>
+  <div class="panel-body">
+		<div class="row">
+			<div class="col-md-2">
+				<ul class="nav nav-pills nav-stacked">
+					<% @current_seasons.each do |season| %>
+					<li class="<%= @active_s[season.id] %>">
+						<a href="/league/home?sid=<%=season.id %>"><%=season.season_name %></a>
+					</li>
+					<% end %>
+				</ul>	
+			</div>
+			<div class="col-md-10">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Player</th>
+							<th>Matches Played</th>
+							<th>Games Won</th>
+							<th>Games Lost</th>
+							<th>Difference</th>
+						</tr>
+					</thead>
+					<tbody>
+							<% @player_info.each do |player| %>
+						<tr>
+								<td><%= Player.find(player.player_id).full_name %></td>
+								<td><%= player.matches_played %></td>
+								<td><%= player.league_points_for %></td>
+								<td><%= player.league_points_against %></td>
+								<td><%= player.league_points_for - player.league_points_against %></td>
+						</tr>
+							<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+  </div>
+</div>

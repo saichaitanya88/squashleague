@@ -34,6 +34,10 @@ module SessionsHelper
 		@current_user.role == "admin"
 	end
 
+	def cu_is_admin?
+		current_user.role == "admin"
+	end
+
 	def is_admin(remember_token)
 		remember_token = User.encrypt(remember_token)
 		current_user ||= User.find_by(remember_token: remember_token)
@@ -48,6 +52,33 @@ module SessionsHelper
 		remember_token = User.encrypt(remember_token)
 		current_user ||= User.find_by(remember_token: remember_token)
 		return !current_user.nil?
+	end
+	
+	def user_can_edit_match(match_id)
+		
+		if !signed_in?
+			return false
+		end
+	
+		if cu_is_admin?
+			return true
+		end
+		match = Match.find(match_id)
+		if (Match.find(match_id).status != "scheduled")
+			return false
+		end
+	
+		player = Player.find_by_user_id(current_user.id)
+		if player.nil? 
+			return false
+		end
+		
+		if player.id == match.player1_id || player.id == match.player2_id
+			return true
+		end
+		
+		return false
+		
 	end
 
 end
