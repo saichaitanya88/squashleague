@@ -43,7 +43,7 @@
 							<select name="user_player" id="user_player" class="form-control">
 								<option value="">----</option>
 								<% @players.each do |player| %>
-									<option user_id="<%= player.user_id %>" value="<%= player.id %>"><%= player.full_name %></option>
+									<option user_id="<%= player.user_id %>" value="<%= player.id %>"><%= player.full_name_abs %></option>
 								<% end %>
 							</select>
 						</div>

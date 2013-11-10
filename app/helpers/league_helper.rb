@@ -19,12 +19,12 @@ module LeagueHelper
 	  		mtr = MatchesToRound.find_by_match_id(match.id)
 	  		rts = RoundsToSeason.find_by_round_id(mtr.round_id)
 	  		season = Season.find(rts.season_id)
+				player_league_info.set_matches_played(player_league_info.matches_played + 1)
 	  		if (season.id.to_s != season_id)
 		  		next
 	  		end
 
 	  		match.games.each do |game|
-		  		player_league_info.set_matches_played(player_league_info.matches_played + 1)
 					if game.game_winner_id == player.id
 						player_league_info.set_league_points_for(player_league_info.league_points_for + 1)
 					else

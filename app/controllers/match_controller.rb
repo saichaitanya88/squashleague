@@ -173,6 +173,7 @@ class MatchController < ApplicationController
   			match.winner_id = match.player2_id
   		end
   		match.status = "completed"
+  		match.save
   	end
   	if !success
   		redirect_to "/match/show?id=#{params[:id]}"

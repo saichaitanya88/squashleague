@@ -59,9 +59,15 @@
 						<% end %>
 					</tbody>
 				</table>
-					<% if @match.scheduled? && SessionsHelper.user_exists(cookies[:remember_token]) %>
-						<%= f.submit "Submit", class: "btn btn-large btn-default pull-right" %>	
-					<% end %>
+				
+				<% if @match.scheduled? && SessionsHelper.user_exists(cookies[:remember_token]) %>
+				<div class="form-group">
+						<div class="col-md-offset-9 col-md-3">
+							<%= f.submit "Submit", class: "btn btn-large btn-default form-control"%>	
+						</div>
+				</div>
+				<% end %>
+				
 				<% end %>
 		</div>
   </div>

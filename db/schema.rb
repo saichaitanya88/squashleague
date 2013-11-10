@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131103190714) do
+ActiveRecord::Schema.define(version: 20131110040707) do
 
   create_table "awards", force: true do |t|
     t.string   "status"
@@ -85,10 +85,10 @@ ActiveRecord::Schema.define(version: 20131103190714) do
     t.string   "first_name",       null: false
     t.string   "last_name",        null: false
     t.string   "bio"
-    t.integer  "primary_image_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "player_image_url"
   end
 
   create_table "players_to_seasons", force: true do |t|

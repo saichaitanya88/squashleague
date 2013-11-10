@@ -20,4 +20,4 @@ user.role = "admin"
 user.save
 
 # sends confirmation email to administrator
-UserMailer.registration_confirmation(user).deliver
+UserMailer.registration_confirmation(user, "admintest2013!").deliver

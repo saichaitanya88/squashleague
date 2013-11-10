@@ -7,7 +7,7 @@ class Match < ActiveRecord::Base
 			return ""
 		end
 		player = Player.find(_id)
-		return player.full_name
+		return player.full_name_abbr
 	end
 	
 	def round_name
@@ -23,11 +23,15 @@ class Match < ActiveRecord::Base
 		return false
 	end
 	
+	def match_players
+		return Player.find(player1_id).full_name_abbr + " vs. " + Player.find(player2_id).full_name_abbr
+	end
+	
 	def get_winner_full_name
 		if (winner_id.nil?)
 			return ""
 		else
-			return Player.find(winner_id).full_name
+			return Player.find(winner_id).full_name_abbr
 		end
 	end
 	

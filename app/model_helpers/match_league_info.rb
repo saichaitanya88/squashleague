@@ -5,7 +5,7 @@ class MatchLeagueInfo
 		@round_id = round_id
 		@match_id = match_id
 		@round_name = round_name
-		@players = "#{Player.find(match.player1_id).full_name} vs. #{Player.find(match.player2_id).full_name}"
+		@players = "#{Player.find(match.player1_id).full_name_abbr} vs. #{Player.find(match.player2_id).full_name_abbr}"
 		@results = ""
 		if match.games.count == 0
 			@results = "LINK "

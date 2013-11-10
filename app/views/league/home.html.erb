@@ -27,7 +27,7 @@
 					<tbody>
 							<% @player_info.each do |player| %>
 						<tr>
-								<td><%= Player.find(player.player_id).full_name %></td>
+								<td><%= Player.find(player.player_id).full_name_abbr %></td>
 								<td><%= player.matches_played %></td>
 								<td><%= player.league_points_for %></td>
 								<td><%= player.league_points_against %></td>

@@ -12,7 +12,7 @@ class User_Player
 
 		player_d = @player	
 		if (player_d) #continue if not nil
-			player_d.primary_image_id = nil
+			player_d.player_image_url = nil
 		end
 		user_player_for_display = User_Player.new(user_d,player_d)
 			  

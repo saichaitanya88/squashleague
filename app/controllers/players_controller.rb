@@ -3,7 +3,7 @@ class PlayersController < ApplicationController
 	  player =  Player.find(params[:id])
 	  # null non-required fields for security
  
-	  player.primary_image_id = nil
+	  player.player_image_url = nil
 	  player.created_at = nil
 	  player.updated_at = nil
 	  
