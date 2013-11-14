@@ -22,11 +22,15 @@ module SessionsHelper
 
 	def get_current_user(remember_token)
     remember_token = User.encrypt(remember_token)
+    #debugger
     @current_user ||= User.find_by(remember_token: remember_token)
   end
 
-	def sign_out
+	def sign_out (remember_token)
 		self.current_user = nil
+		remember_token = User.encrypt(cookies[:remember_token])
+		user = User.find_by(remember_token: remember_token)
+		user.update_attribute(:remember_token, "")
     cookies.delete(:remember_token)
 	end
 
@@ -39,6 +43,7 @@ module SessionsHelper
 	end
 
 	def is_admin(remember_token)
+	
 		remember_token = User.encrypt(remember_token)
 		current_user ||= User.find_by(remember_token: remember_token)
 		if current_user
@@ -49,6 +54,7 @@ module SessionsHelper
 	end
 
 	def user_exists(remember_token)
+	debugger
 		remember_token = User.encrypt(remember_token)
 		current_user ||= User.find_by(remember_token: remember_token)
 		return !current_user.nil?

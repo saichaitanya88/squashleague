@@ -5,5 +5,6 @@ class HomeController < ApplicationController
 
   def news
    	@sl_active = "active"
+   	
   end
 end

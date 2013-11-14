@@ -187,8 +187,9 @@ class AdminController < ApplicationController
 		generated_password = (0...12).map { (65 + rand(26)).chr }.join
 		user.password = generated_password
 		user.password_confirmation = generated_password
+		url = "#{request.protocol}#{request.host}"
 		if (user.save)
-			UserMailer.registration_confirmation(user, generated_password).deliver
+			UserMailer.registration_confirmation(user, generated_password, url).deliver
 			flash[:success] = "User: " + user.name + " Created!"
 			success = true
 		else
@@ -207,7 +208,7 @@ class AdminController < ApplicationController
 	def manage_user
 		not_admin(cookies[:remember_token])
 		player_in_db = Player.find(params[:user_player])
-		debugger
+
 		user = User.find(params[:user][:id])
 		success = false
 		# if both are not nil

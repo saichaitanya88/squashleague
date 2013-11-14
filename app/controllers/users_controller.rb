@@ -23,9 +23,16 @@ class UsersController < ApplicationController
   def dashboard_main
   	user = SessionsHelper.get_current_user(cookies[:remember_token])
   	player = Player.find_by_user_id(user.id)
-  	players_matches1 = Match.where(:player1_id => player.id).where(:status => "scheduled")
-  	players_matches2 = Match.where(:player2_id => player.id).where(:status => "scheduled")
-  	@players_matches = players_matches1 + players_matches2
+  	@players_matches = Array.new
+  	#debugger
+  	if !player.nil? 
+  		players_matches1 = Match.where(:player1_id => player.id).where(:status => "scheduled")
+			players_matches2 = Match.where(:player2_id => player.id).where(:status => "scheduled")
+			@players_matches = players_matches1 + players_matches2
+		else
+			flash[:warning] = "No matches found. If this information is incorrect, please contact the Admin."
+  	end
+  	
   end
   
 	def get_user
@@ -41,6 +48,13 @@ class UsersController < ApplicationController
   	# allows users to change username, player name, bio, and image url
   	@user = SessionsHelper.get_current_user(cookies[:remember_token])
   	@player = Player.find_by_user_id(@user.id)
+  	if @player.nil?
+  		@player = Player.new
+  		@player.first_name = "NOT ASSOCIATED"
+  		@player.last_name = "NOT ASSOCIATED"
+  		@player.player_image_url = "NOT ASSOCIATED"
+  		@player.bio = "NOT ASSOCIATED"
+  	end
   end
   
   def update_details
@@ -61,21 +75,59 @@ class UsersController < ApplicationController
   	
   	@player = Player.find_by_user_id(@user.id)
   	
-  	@player.first_name = player_first_name
-  	@player.last_name = player_last_name
-  	@player.player_image_url = player_image_url
-  	@player.bio = player_bio
-  	  	
-  	if !@player.save
-  		@player.errors.full_messages.each do |err|
-  			errors.push(err)
-  		end
+  	if @player.nil?
+			errors.push("Player is not associated with the user")  	
+  	else
+			@player.first_name = player_first_name
+			@player.last_name = player_last_name
+			@player.player_image_url = player_image_url
+			@player.bio = player_bio
+			  	
+			if !@player.save
+				@player.errors.full_messages.each do |err|
+					errors.push(err)
+				end
+			end
+  	
   	end
+  	
   	
   	if errors.length > 0
   		flash[:error] = errors
   	else
 	  	flash[:success] = "Settings Changed"
+  	end
+  	
+  	redirect_to "/users/settings"
+  end
+  
+  def update_password
+  	# take username, player first and last name. player image url, player bio and update.
+  	
+  	# username cannot be null, and must be unique
+  	# first name cannot be null
+  	# last name cannot be null
+  	
+  	user = SessionsHelper.get_current_user(cookies[:remember_token])
+  	errors = Array.new
+  	
+  	if !user.authenticate(params[:password])
+  		errors.push("Invalid Password")
+  	end
+  	
+  	user.password = params[:new_password]
+  	user.password_confirmation = params[:new_password_confirmation]
+	  debugger
+	  if !user.save
+	  	user.errors.full_messages.each do |message|
+	  		errors.push(message)
+	  	end
+	  end
+	  
+  	if errors.length > 0
+  		flash[:error] = errors
+  	else
+	  	flash[:success] = "Your password has been changed"
   	end
   	
   	redirect_to "/users/settings"

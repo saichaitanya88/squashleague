@@ -41,6 +41,7 @@ SquashLeague::Application.routes.draw do
 	
   get "users/settings"
   post "users/update_details"
+  post "users/update_password"
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
