@@ -30,9 +30,9 @@
 								<% rr.each do |m| %>
 									<tr>
 										<td><%= m.players %></td>
-										<% if (m.results.include? "LINK") && user_can_edit_match(m.match_id)  %>
+										<% if (m.results.include? "LINK") && user_can_edit_match(m.match_id, @user)  %>
 											<td><%= link_to "Submit Score", match_show_path( :id => m.match_id )%></td>
-										<% elsif (m.results.include? "LINK") && !user_can_edit_match(m.match_id) %>
+										<% elsif (m.results.include? "LINK") && !user_can_edit_match(m.match_id, @user) %>
 											<td>---</td>
 										<% else %>
 											<td><%= m.results %></td>

@@ -35,4 +35,15 @@ class Match < ActiveRecord::Base
 		end
 	end
 	
+	def get_game_on_index(game_index)
+		# if match has valid game on specified index, returns game
+		# else returns Game.new
+		
+		if !self.games[game_index].nil?
+			return self.games[game_index]
+		else
+			return Game.new
+		end
+	end
+	
 end

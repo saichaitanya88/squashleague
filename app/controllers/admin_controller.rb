@@ -28,28 +28,28 @@ class AdminController < ApplicationController
 		if success
 			if season_name.empty?
 				success = false
-				flash[:error] = "Season name cannot be nothing"
+				flash.keep[:error] = "Season name cannot be nothing"
 			end
 		end
 			
 		if success
 			if division_id.empty?
 				success = false
-				flash[:error] = "Please select a division"
+				flash.keep[:error] = "Please select a division"
 			end
 		end
 		
 		if success		
 			if grace_period.empty?
 				success = false
-				flash[:error] = "Please enter season grace period"
+				flash.keep[:error] = "Please enter season grace period"
 			end
 		end
 		
 		if success
 			if matches_per_player_pair.empty? 
 				success = false
-				flash[:error] = "Please enter the number of matches per player pair"
+				flash.keep[:error] = "Please enter the number of matches per player pair"
 			end
 		end
 		
@@ -57,7 +57,7 @@ class AdminController < ApplicationController
 		if success
 			if t.empty?
 				success = false
-				flash[:error] = "Please select when the season starts"
+				flash.keep[:error] = "Please select when the season starts"
 			end
 		end
 		
@@ -65,7 +65,7 @@ class AdminController < ApplicationController
 		if success
 			if t_split.count != 3
 				success = false
-				flash[:error] = "Season start date is invalid"
+				flash.now[:error] = "Season start date is invalid"
 			end
 		end
 		
@@ -76,7 +76,7 @@ class AdminController < ApplicationController
 		
 		if success
 			if params[:player_id].nil? == true
-				flash[:error] = "Please select at least two players"
+				flash.keep[:error] = "Please select at least two players"
 				success = false
 			end
 		end
@@ -89,18 +89,18 @@ class AdminController < ApplicationController
 		
 		if success
 			if (players.count < 2)
-				flash[:error] = "Please select at least two players"
+				flash.keep[:error] = "Please select at least two players"
 				success = false
 			end
 		end
 		
 		if success
 			if Season.find_by_season_name(season_name)
-				flash[:error] = "A Season with this name already exists."
+				flash.now[:error] = "A Season with this name already exists."
 			end
 			debugger
 			sh = (Schedule_Helper.new).generate_schedule(players, matches_per_player_pair.to_i, grace_period.to_i, season_start, season_name, division_id.to_i)
-			flash[:success] = "New Season Created!"		
+			flash.keep[:success] = "New Season Created!"		
 		end
 		
 		if success
@@ -127,13 +127,13 @@ class AdminController < ApplicationController
 		success = false
 		if (validate_player(player))
 			if (player.save)
-				flash[:success] = "Player: " + player.first_name + " " + player.last_name + " created!"
+				flash.keep[:success] = "Player: " + player.first_name + " " + player.last_name + " created!"
 				success = true
 			else
-				flash[:error] = player.errors.full_messages
+				flash.keep[:error] = player.errors.full_messages
 			end
 		else
-			flash[:error] = "Unable to create player! Player already exists."
+			flash.keep[:error] = "Unable to create player! Player already exists."
 		end
 		
 		if (success)
@@ -158,10 +158,10 @@ class AdminController < ApplicationController
 		success = false
 		
 		if (player_in_db.save)
-			flash[:success] = "Player: " + player_in_db.first_name + " " + player_in_db.last_name + " updated!"
+			flash.keep[:success] = "Player: " + player_in_db.first_name + " " + player_in_db.last_name + " updated!"
 			success = true
 		else
-			flash[:error] = player_in_db.errors.full_messages
+			flash.keep[:error] = player_in_db.errors.full_messages
 		end
 				
 		if (success)
@@ -190,10 +190,10 @@ class AdminController < ApplicationController
 		url = "#{request.protocol}#{request.host}"
 		if (user.save)
 			UserMailer.registration_confirmation(user, generated_password, url).deliver
-			flash[:success] = "User: " + user.name + " Created!"
+			flash.keep[:success] = "User: " + user.name + " Created!"
 			success = true
 		else
-			flash[:error] = user.errors.full_messages
+			flash.keep[:error] = user.errors.full_messages
 		end
 
 		redirect_to "/admin/admin_dashboard"
@@ -214,14 +214,14 @@ class AdminController < ApplicationController
 		# if both are not nil
 		if player_in_db && user 
 			if !player_in_db.user_id.nil? #if user already has a player associated with user
-				flash[:error] = "Player is already associated with the user"
+				flash.keep[:error] = "Player is already associated with the user"
 			else
 				player_in_db.user_id = user.id
 				if(player_in_db.save)
-					flash[:success] = "User is linked to player"
+					flash.keep[:success] = "User is linked to player"
 					success = true
 				else
-					flash[:error] = player_in_db.errors.full_messages
+					flash.keep[:error] = player_in_db.errors.full_messages
 				end
 			end
 		end
@@ -240,7 +240,7 @@ class AdminController < ApplicationController
 		@matches = Array.new
 		if @rounds.empty?
 			success = false
-			flash[:error] = "No rounds exist for this season"
+			flash.now[:error] = "No rounds exist for this season"
 		end
 		if success
 			@rounds.each do |round|

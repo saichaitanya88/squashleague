@@ -4,7 +4,7 @@ module AdminHelper
 
 	def not_admin(remember_token)
 		if !SessionsHelper.is_admin(remember_token)
-			redirect_to root_path, alert: "Action not allowed"
+			redirect_to root_path, :flash => { :error => "Action not allowed." }
 		end
 	end
 

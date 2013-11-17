@@ -6,8 +6,9 @@ class MatchController < ApplicationController
   	begin
   			@match = Match.find(match_id)
   			@games = Game.where(:match_id => match_id)
+  			@user = SessionsHelper.get_current_user(cookies[:remember_token])
   	rescue Exception=> e
-  			flash[:error] = "Match not found"
+  			flash.keep[:error].push("Match not found")
   			success = false
   	end
   	  	
@@ -20,136 +21,141 @@ class MatchController < ApplicationController
   def edit
   	#debugger
   	match = Match.find(params[:id])
+  	flash.keep[:error] = Array.new
 		success = true
-		
 		if match.nil?
 			success = false
-			flash[:error] = "This match cannot be found"
+			flash.keep[:error].push("This match cannot be found")
 		end
 		
-  	# if match.status is not scheduled, do not even bother
+		current_user = SessionsHelper.get_current_user(cookies[:remember_token])
   	if success
-			if !match.scheduled?
+			if current_user.nil?
 				success = false
-				flash[:error] = "This match cannot be updated"
-			end
-  	end
-  	
-  	if success
-			if SessionsHelper.get_current_user(cookies[:remember_token]).nil?
-				success = false
-				flash[:error] = "Please log in to update score"
+				flash.keep[:error].push("Please log in to update score")
 			end
   	end
   	
   	# if user's player is not player1 or player2, do not allow. unless user is admin
   	if success
-			if !SessionsHelper.is_admin?
+			if current_user.role != "admin"
 				if SessionsHelper.get_current_user(cookies[:remember_token]).id != Player.find(match.player1_id).user_id && SessionsHelper.get_current_user(cookies[:remember_token]).id != Player.find(match.player2_id).user_id
 					success = false
-					flash[:error] = "You cannot update this match's scores"
+					flash.keep[:error].push("You cannot update this match's scores")
 				end
 			end
   	end
   	
-  	# check if all games exist in series. eg. Games 1 2 and 4 cannot exist without game 3 being checked.
-  	games_selected = Array.new
+  	# if match.status is not scheduled, do not even bother
+  	if success
+			if !match.scheduled? && current_user.role != "admin"
+				success = false
+				flash.keep[:error].push("This match cannot be updated")
+			end
+  	end
+  	
   	players_scores = Array.new
   	number_of_games = 0
-  	
-  	if params[:game_selected].nil?
-  		success = false
-  		flash[:error] = "Scores for three games must be submitted."
-  	end
-  	
   	if success
 			(0..4).each do |i|  	
-				game_selected = params[:game_selected][(i).to_s]
 				player_score_pair = Player_Score_Pair.new(params[:game_p1_score][i.to_s], params[:game_p2_score][i.to_s])
-				if !game_selected.nil?
+				if player_score_pair.p1 != 0 && player_score_pair.p2 != 0
 					number_of_games = number_of_games + 1
+					players_scores.push(player_score_pair)
 				end
-				games_selected.push(game_selected)
-				players_scores.push(player_score_pair)
 			end
   	end
-  	if success
+  
+ 	 	if success
   		if number_of_games < 3
   			success = false
-				flash[:error] = "Scores for three games must be submitted."
+				flash.keep[:error].push("Scores for three games must be submitted.")
   		end
   	end
   	
-  	if success
-			(1..4).to_a.reverse.each do |x|
-				if (games_selected[x] == "on" && games_selected[x-1] == nil)
-					success = false
-					flash[:error] = "Please ensure that all checkboxes are added correctly."
-				end
-			end
-  	end
-  	
-  	# game score rules: 
-  	# 	if both games are greater than 10, the difference between two games must be 2 exactly.
-  	# 	if 1 game has a score greater than 11, then the second game has to be atleast 10.
-  	# 	1 game has to be atleast equal to 11 
-  	#	if all are true, then allow games to be saved.
-  	p1_tally = 0
+		p1_tally = 0
   	p2_tally = 0
   	if success
   		(0..4).each do |x|
-  			if games_selected[x] == "on"
   				p1_score = players_scores[x].p1.to_i
   				p2_score = players_scores[x].p2.to_i
-  				if (p1_score - p2_score).abs > 2
-  					if !(p1_score == 11 || p2_score == 11)
-  						success = false
-  						flash[:error] = "Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores"
-  						break
-  					end
-  				elsif (p1_score - p2_score).abs == 2
-  					if !(p1_score >= 10 || p2_score >= 10)
-  						success = false
-  						flash[:error] = "Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores"
-  						break
-  					end
-  				else	
-  					success = false
- 						flash[:error] = "Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores"
- 						break
+  				
+  				if p1_score == 0 && p2_score == 0
+  					next 
   				end
+ 					if p1_score < 11 && p2_score < 11
+	 					success = false
+  					flash.keep[:error].push("Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores")
+  					break
+ 					end
+ 					if (p1_score >= 11 && p2_score >= 11)
+ 						if (p1_score - p2_score).abs != 2
+							success = false
+							flash.keep[:error].push("Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores")
+							break
+						end
+ 					elsif p1_score >= 11 || p2_score >= 11
+ 					
+ 						if (p1_score > 11)
+							if (p1_score - p2_score).abs != 2
+								success = false
+								flash.keep[:error].push( "Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores")
+								break
+							end
+						elsif (p2_score > 11)
+							if (p1_score - p2_score).abs != 2
+								success = false
+								flash.keep[:error].push( "Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores")
+								break
+							end
+ 						end
+ 					
+						if (p1_score - p2_score).abs < 2
+							success = false
+							flash.keep[:error].push( "Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores")
+							break
+						end
+					else
+						success = false
+						flash.keep[:error].push("Game scores: " + p1_score.to_s + " and " + p2_score.to_s + " are not valid scores")
+						break
+ 					end
+ 					
   				if (p1_score > p2_score)
 	  				p1_tally = p1_tally + 1
   				else
 	  				p2_tally = p2_tally + 1
   				end
-  			end
   		end
   	end
   	
-  	# p1 or p2 has to be == 3
+		# p1 or p2 has to be == 3
   	# p1 - p2 (abs) should not be greater than 3
   	# p1 + p2 should be == 5 (max)
-
+		
   	if (p1_tally == p2_tally)
   		success = false
- 			flash[:error] = "Incorrect entry: game tally is invalid"
+ 			flash.keep[:error].push("Incorrect entry: game tally is invalid")
  		elsif (p1_tally + p2_tally) > 5
   		success = false
- 			flash[:error] = "Incorrect entry: game tally is invalid"
+ 			flash.keep[:error].push("Incorrect entry: game tally is invalid")
   	elsif ((p1_tally - p2_tally).abs > 3)
   		success = false
- 			flash[:error] = "Incorrect entry: game tally is invalid"
+ 			flash.keep[:error].push("Incorrect entry: game tally is invalid")
  		elsif (p1_tally != 3 && p2_tally != 3)
   		success = false
- 			flash[:error] = "Incorrect entry: game tally is invalid"
+ 			flash.keep[:error].push("Incorrect entry: game tally is invalid")
   	end
   	
   	game_number = 1
   	if success
   		(0..4).each do |x|
-	  		if games_selected[x] == "on"
-	  			game = Game.new
+			 		#if a 4 game match was entered and a 3 game match was re-entered this will fix any additional games left over in the database
+	  			if !match.games[x].nil?
+		  			game_db = match.games[x]
+		  			game_db.destroy 
+	  			end
+  				game = Game.new
 	  			p1_score = players_scores[x].p1.to_i
   				p2_score = players_scores[x].p2.to_i
 	  			game.player1_score = p1_score
@@ -162,9 +168,12 @@ class MatchController < ApplicationController
 	  			game.game_number = game_number
 	  			game.match_id = match.id
 	  			game.status = "completed"
-	  			game.save
+	  			
+	  			if game.player1_score != 0 && game.player2_score != 0
+		  			game.save
+	  			end
+	  			
 	  			game_number = game_number + 1
-	  		end
   		end
   		
   		if (p1_tally > p2_tally)
@@ -175,12 +184,16 @@ class MatchController < ApplicationController
   		match.status = "completed"
   		match.save
   	end
+  	
+  	if flash.keep[:error].length == 0
+  		flash.clear
+  	end
+  	
   	if !success
   		redirect_to "/match/show?id=#{params[:id]}"
   	else
   	
   		season_id = RoundsToSeason.find_by_round_id(MatchesToRound.find_by_match_id(match.id).round_id).season_id
-  	
   		redirect_to "/league/schedule?sid=#{season_id}"
   	end
   end

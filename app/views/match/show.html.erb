@@ -5,70 +5,78 @@
   <div class="panel-body">
 		<div class="row">
 			<%= form_for @match, :html => { :class => "form-horizontal" }, :url => url_for(:controller => "match", :action => "edit", :id  => @match.id) do |f| %>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Game Id</th>
-							<th><%= @match.player_full_name(@match.player1_id) %> Score</th>
-							<th><%= @match.player_full_name(@match.player2_id) %> Score</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<% (0..4).each do |i| %>
-							<tr>
-								<td>
-									<div class="checkbox">
-											<label>
-												<input type="checkbox" name="game_selected<%=[i]%>" /> Game <%= i+1 %>
-											</label>
-									</div>								
-								</td>
-								<td>
-									<select class="form-control" name="game_p1_score<%=[i]%>">
-										<% (0..21).each do |j| %>
-											<% if @games.nil? == false and @games[i].nil? == false %>
-													<% if @games[i].player1_score == j %>
-														<option value="<%=j%>" selected><%=j%></option>
-													<% else %>
-														<option value="<%=j%>"><%=j%></option>
-													<% end %>
-												<% else %>
-													<option value="<%=j%>"><%=j%></option>
-											<% end %>
-										<% end %>
-									</select>
-								</td>
-								<td>
-								<select class="form-control" name="game_p2_score<%=[i]%>">
-										<% (0..21).each do |j| %>
-											<% if @games.nil? == false and @games[i].nil? == false %>
-													<% if @games[i].player2_score == j %>
-														<option value="<%=j%>" selected><%=j%></option>
-													<% else %>
-														<option value="<%=j%>"><%=j%></option>
-													<% end %>
-												<% else %>
-													<option value="<%=j%>"><%=j%></option>
-											<% end %>
-										<% end %>
-									</select>
-								</td>
-								<td></td>
-							</tr>
-						<% end %>
-					</tbody>
-				</table>
-				
-				<% if @match.scheduled? && SessionsHelper.user_exists(cookies[:remember_token]) %>
 				<div class="form-group">
-						<div class="col-md-offset-9 col-md-3">
+						<label class="control-label col-md-2"></label>
+						<div class="col-md-2">
+							<p><b><%=@match.player_full_name(@match.player1_id)%></b></p>
+						</div>
+						<div class="col-md-2">
+							<p><b><%=@match.player_full_name(@match.player2_id)%></b></p>
+						</div>
+					</div>
+				<div class="form-group">
+						<label class="control-label col-md-2">Game 1</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p1_score[0]" placeholder="<%= @match.player_full_name(@match.player1_id)%> Score" 
+							value="<%= @match.get_game_on_index(0).player1_score %>" />
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p2_score[0]" placeholder="<%= @match.player_full_name(@match.player2_id)%> Score" 
+							value="<%= @match.get_game_on_index(0).player2_score %>" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2">Game 2</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p1_score[1]" placeholder="<%= @match.player_full_name(@match.player1_id)%> Score" 
+								value="<%= @match.get_game_on_index(1).player1_score %>" />
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p2_score[1]" placeholder="<%= @match.player_full_name(@match.player2_id)%> Score" 
+								value="<%= @match.get_game_on_index(1).player2_score %>" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2">Game 3</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p1_score[2]" placeholder="<%= @match.player_full_name(@match.player1_id)%> Score" 
+								value="<%= @match.get_game_on_index(2).player1_score %>" />
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p2_score[2]" placeholder="<%= @match.player_full_name(@match.player2_id)%> Score" 
+								value="<%= @match.get_game_on_index(2).player2_score %>" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2">Game 4</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p1_score[3]" placeholder="<%= @match.player_full_name(@match.player1_id)%> Score" 
+								value="<%= @match.get_game_on_index(3).player1_score %>" />
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p2_score[3]" placeholder="<%= @match.player_full_name(@match.player2_id)%> Score" 
+								value="<%= @match.get_game_on_index(3).player2_score %>" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-2">Game 5</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p1_score[4]" placeholder="<%= @match.player_full_name(@match.player1_id)%> Score" 
+								value="<%= @match.get_game_on_index(4).player1_score %>" />
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" name="game_p2_score[4]" placeholder="<%= @match.player_full_name(@match.player2_id)%> Score" 
+								value="<%= @match.get_game_on_index(4).player2_score %>" />
+						</div>
+					</div>
+				<% if SessionsHelper.user_can_edit_match(@match.id, @user) %>
+				<div class="form-group">
+						<div class="col-md-offset-2 col-md-1">
 							<%= f.submit "Submit", class: "btn btn-large btn-default form-control"%>	
 						</div>
 				</div>
 				<% end %>
-				
-				<% end %>
+			<% end %>
 		</div>
   </div>
 </div>

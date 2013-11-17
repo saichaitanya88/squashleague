@@ -21,6 +21,7 @@ class LeagueController < ApplicationController
 		@active_ri = Hash.new
 		@active_s = Hash.new
 		@round_info = Array.new
+		@user = SessionsHelper.get_current_user(cookies[:remember_token])
 		if !(sid.nil? || sid.empty?)
 			@round_info = generate_round_league_info(sid)
 			@active_s[sid.to_i] = "active"

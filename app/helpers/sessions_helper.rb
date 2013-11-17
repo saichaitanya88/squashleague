@@ -2,7 +2,7 @@ module SessionsHelper
 
 	def sign_in(user)
     remember_token = User.new_remember_token
-    cookies.permanent[:remember_token] = remember_token
+    cookies[:remember_token] = remember_token
     user.update_attribute(:remember_token, User.encrypt(remember_token))
     self.current_user = user
   end
@@ -22,8 +22,8 @@ module SessionsHelper
 
 	def get_current_user(remember_token)
     remember_token = User.encrypt(remember_token)
-    #debugger
-    @current_user ||= User.find_by(remember_token: remember_token)
+    #@current_user ||=
+    return User.find_by(remember_token: remember_token).reload
   end
 
 	def sign_out (remember_token)
@@ -54,27 +54,27 @@ module SessionsHelper
 	end
 
 	def user_exists(remember_token)
-	debugger
 		remember_token = User.encrypt(remember_token)
 		current_user ||= User.find_by(remember_token: remember_token)
 		return !current_user.nil?
 	end
 	
-	def user_can_edit_match(match_id)
-		
-		if !signed_in?
+	def user_can_edit_match(match_id, user)
+			
+		if user.nil?
 			return false
 		end
-	
-		if cu_is_admin?
+			
+		if user.role == "admin"
 			return true
 		end
+		
 		match = Match.find(match_id)
 		if (Match.find(match_id).status != "scheduled")
 			return false
 		end
 	
-		player = Player.find_by_user_id(current_user.id)
+		player = Player.find_by_user_id(user.id)
 		if player.nil? 
 			return false
 		end
