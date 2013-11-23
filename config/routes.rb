@@ -29,6 +29,7 @@ SquashLeague::Application.routes.draw do
 	get "admin/manage_users"
 	post "admin/create_user"
 	post "admin/create_player"
+	post "admin/reset_user_password"
 	
 	match '/news', to: 'home#news', via: 'get'
 

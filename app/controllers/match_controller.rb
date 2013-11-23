@@ -183,6 +183,11 @@ class MatchController < ApplicationController
   		end
   		match.status = "completed"
   		match.save
+  		#debugger
+  		t1 = Thread.new do
+  			UserMailer.score_update_email(current_user, match).deliver
+  		end
+  		
   	end
   	
   	if flash.keep[:error].length == 0

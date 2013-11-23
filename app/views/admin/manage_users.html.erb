@@ -57,6 +57,14 @@
 					</div>
 				  
 				<% end %>
+				<%= form_for(:user, :url => url_for(:action => "reset_user_password"), :html => {:class => "form-horizontal"}) do |f| %>
+				<%= f.hidden_field :id %>
+				<div class="form-group">
+						<div class="col-md-offset-1 col-md-1">
+							<%= f.submit "Reset Password", class: "btn btn-large btn-default" %>	
+						</div>
+					</div>
+				<%end%>
 			</div>
 		</div>
   </div>

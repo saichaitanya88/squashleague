@@ -15,4 +15,11 @@ class Player < ActiveRecord::Base
 	
 	end
 	
+	def user
+		if !user_id.nil?
+			return User.find(user_id)
+		end
+		return User.new
+	end
+	
 end

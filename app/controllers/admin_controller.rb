@@ -260,4 +260,24 @@ class AdminController < ApplicationController
 		not_admin(cookies[:remember_token])
 	end
 
+	
+	def reset_user_password
+		not_admin(cookies[:remember_token])
+		user = User.find(params[:id])
+		success = false;
+		generated_password = (0...12).map { (65 + rand(26)).chr }.join
+		user.password = generated_password
+		user.password_confirmation = generated_password
+		url = "#{request.protocol}#{request.host}"
+		if (user.save)
+			UserMailer.reset_user_password_email(user, generated_password, url).deliver
+			flash.keep[:success] = "Password  updated for user: #{user.name}!"
+			success = true
+		else
+			flash.keep[:error] = user.errors.full_messages
+		end
+
+		redirect_to "/admin/admin_dashboard"
+	end
+
 end

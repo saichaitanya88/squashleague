@@ -23,7 +23,11 @@ module SessionsHelper
 	def get_current_user(remember_token)
     remember_token = User.encrypt(remember_token)
     #@current_user ||=
-    return User.find_by(remember_token: remember_token).reload
+    user_to_return = User.find_by(remember_token: remember_token)
+    if (user_to_return != nil)
+    	return user_to_return.reload
+    end
+    return user_to_return
   end
 
 	def sign_out (remember_token)

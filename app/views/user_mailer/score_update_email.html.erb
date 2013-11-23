@@ -1,0 +1,38 @@
+<html>
+<body>
+
+Hello <%= @player1.first_name %> and <%=@player1.first_name %>:
+<br><br>
+Your match scores have been updated by <%= @user.email %>
+<br><br>
+The winner of the match is: <b><%= @match.get_winner_full_name %></b>
+
+<br><br>
+Match Details:
+<table>
+<thead>
+	<tr>
+		<th><%= @player1.first_name %></th>
+		<th><%= @player1.first_name %></th>
+	</tr>
+</thead>
+<tbody>
+	<% @match.games.each do |game| %>
+		<tr>
+			<th><%= game.player1_score %></th>
+			<th><%= game.player2_score %></th>
+		</tr>
+	<% end %>
+</tbody>
+</table>
+
+<br><br>
+Good luck in the rest of your season!
+
+
+<br><br>
+<i>If there are any discrepancies, please reply to this email.</i>
+
+</body>
+</html>
+
