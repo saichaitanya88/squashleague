@@ -25,7 +25,7 @@ class Schedule_Helper
 		puts JSON.pretty_generate(compressed_rounds)
 		puts "Randomized Compressed Rounds"
 		complete_compressed_rounds = generate_complete_rounds(compressed_rounds, number_of_repeats)
-		create_database_entries(complete_compressed_rounds, season_start_date, number_of_rounds, number_of_repeats,season_name, division_id)
+		create_database_entries(complete_compressed_rounds, season_start_date, number_of_rounds, number_of_repeats,season_name, division_id, players)
 		
 	end
 	
@@ -40,7 +40,7 @@ class Schedule_Helper
 		return complete_compressed_rounds
 	end
 	
-	def create_database_entries(compressed_rounds, season_start_date, number_of_rounds, number_of_repeats, season_name, division_id)
+	def create_database_entries(compressed_rounds, season_start_date, number_of_rounds, number_of_repeats, season_name, division_id, players)
 	
 		db_season = Season.new
 		db_season.season_start = season_start_date
@@ -49,6 +49,19 @@ class Schedule_Helper
 		db_season.season_name = season_name
 		db_season.season_status = "active"
 		db_season.save
+		
+		puts "players to season"
+		
+		players.each do |player|
+			pts = PlayersToSeason.new
+			pts.status = "active"
+			pts.season_id = db_season.id
+			debugger
+			pts.player_id = player.id
+			pts.save
+		end
+		
+		
 		puts "Create Season"
 		
 		db_season_to_division = SeasonsToDivision.new

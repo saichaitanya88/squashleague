@@ -1,0 +1,102 @@
+Hello Squash League Participants:
+<br/><br/>
+<% if !@all_past_rounds.nil? %>
+These are the list of past matches that are not yet completed.
+<i>These need to be completed as soon as possible. Your co-operation is very much appreciated in this. </i>
+<table>
+	<thead>
+		<tr>
+			<th>Round #</th>
+			<th>Round Duration</th>
+			<th>Player 1</th>
+			<th>Player 2</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @incomplete_matches.each do |match| %>
+			<tr>
+				<td><%= match.round.round_order %></td>
+				<td><%= "#{match.round.round_start} - #{match.round.round_end}" %></td>
+				<td><%= match.player_full_name(match.player1_id) %></td>
+				<td><%= match.player_full_name(match.player2_id) %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+<% end %>
+
+<br/><br/>
+
+<% if !@past_round.nil? %>
+These are the results from the last round's matches.
+<table>
+	<thead>
+		<tr>
+			<th>Players</th>
+			<th>Results</th>
+			<th>Winner</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @past_round.matches.each do |match| %>
+		<tr>
+			<td><%= "#{match.player_full_name(match.player1_id)} vs. #{match.player_full_name(match.player1_id)}" %></td>
+			<td><%= match.get_results_string %></td>
+			<td><%= "#{match.player_full_name(match.winner_id)}" %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+<% end %>
+<br/><br/>
+<% if !@next_round.nil? %>
+Here is the schedule for the next round.
+<table>
+	<thead>
+		<tr>
+			<th>Players</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @next_round.matches.each do |match| %>
+		<tr>
+			<td><%= "#{match.player_full_name(match.player1_id)} vs. #{match.player_full_name(match.player1_id)}" %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+<% end %>
+<br/><br/>
+
+<% if !@players_league_info_array.nil? %>
+Lastly, here is the current league table.
+<table>
+					<thead>
+						<tr>
+							<th>Player</th>
+							<th>Matches Played</th>
+							<th>Games Won</th>
+							<th>Games Lost</th>
+							<th>Difference</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @players_league_info_array.each do |player| %>
+						<tr>
+								<td><%= Player.find(player.player_id).full_name_abbr %></td>
+								<td><%= player.matches_played %></td>
+								<td><%= player.league_points_for %></td>
+								<td><%= player.league_points_against %></td>
+								<td><%= player.league_points_for - player.league_points_against %></td>
+						</tr>
+						<% end %>
+					</tbody>
+				</table>
+<% end %>
+
+Thank you for participating. Good luck in the rest of your season!
+<br /><br />
+Squash League Mailer
+
+
+<%= debug @email_addresses %>

@@ -2,7 +2,11 @@ module LeagueHelper
 
 	def generate_player_league_info(season_id)
 		players_league_info_array = Array.new
-		Player.all.each do |player|
+		pts = PlayersToSeason.where(:season_id => season_id)
+		
+		
+		pts.each do |p|
+			player = Player.find(p.player_id)
 			player_league_info = PlayerLeagueInfo.new(player.id)
 	  	matches_p1 = Match.where(player1_id: player.id).where(status: "completed")
 	  	matches_p2 = Match.where(player2_id: player.id).where(status: "completed")
@@ -16,6 +20,10 @@ module LeagueHelper
 			end
 
 	  	matches_p.each do |match|
+	  		#only want correct season
+				if match.round.season.id != p.season_id
+		  		next
+	  		end
 	  		mtr = MatchesToRound.find_by_match_id(match.id)
 	  		rts = RoundsToSeason.find_by_round_id(mtr.round_id)
 	  		season = Season.find(rts.season_id)

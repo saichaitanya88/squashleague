@@ -47,3 +47,5 @@ end
 # Use debugger
 gem 'debugger', group: [:development, :test]
 
+# scheduled tasks for emailing users
+gem "rufus-scheduler", "~> 3.0.2"

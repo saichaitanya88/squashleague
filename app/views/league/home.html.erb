@@ -8,7 +8,7 @@
 				<ul class="nav nav-pills nav-stacked">
 					<% @current_seasons.each do |season| %>
 					<li class="<%= @active_s[season.id] %>">
-						<a href="/league/home?sid=<%=season.id %>"><%=season.season_name %></a>
+						<a href="/league/home?sid=<%=season.id %>"><%= season.season_name %></a>
 					</li>
 					<% end %>
 				</ul>	
@@ -25,7 +25,7 @@
 						</tr>
 					</thead>
 					<tbody>
-							<% @player_info.each do |player| %>
+						<% @player_info.each do |player| %>
 						<tr>
 								<td><%= Player.find(player.player_id).full_name_abbr %></td>
 								<td><%= player.matches_played %></td>
@@ -33,7 +33,7 @@
 								<td><%= player.league_points_against %></td>
 								<td><%= player.league_points_for - player.league_points_against %></td>
 						</tr>
-							<% end %>
+						<% end %>
 					</tbody>
 				</table>
 			</div>

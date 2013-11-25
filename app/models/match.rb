@@ -10,6 +10,12 @@ class Match < ActiveRecord::Base
 		return player.full_name_abbr
 	end
 	
+	def round
+		mtr = MatchesToRound.find_by_match_id(id)
+		rnd = Round.find(mtr.round_id)
+		return rnd
+	end
+	
 	def round_name
 		mtr = MatchesToRound.find_by_match_id(id)
 		round = Round.find(mtr.round_id)
@@ -44,6 +50,18 @@ class Match < ActiveRecord::Base
 		else
 			return Game.new
 		end
+	end
+	
+	def get_results_string
+		results = ""
+		self.games.each do |game|
+			results = results + "#{game.player1_score}-#{game.player2_score}" + ","
+		end
+		
+		if !results.nil?
+			results = results.chomp
+		end
+		return results
 	end
 	
 end

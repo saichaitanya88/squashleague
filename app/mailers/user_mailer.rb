@@ -29,7 +29,17 @@ class UserMailer < ActionMailer::Base
   	admin_emails = admin_emails.chomp
   	puts admin_emails
   	mail(:to => "#{all_email_addresses}", :bcc => "#{admin_emails}", :subject => "SQUASH LEAGUE: #{p1_name}-#{p2_name} Match Scores")
-  	
+  end
+  
+  def weekly_update_email(all_past_rounds, incomplete_matches, past_round, next_round, players_league_info_array, email_addresses)
+  	  @all_past_rounds = all_past_rounds
+  	  @incomplete_matches = incomplete_matches
+  	  @past_round = past_round
+			@next_round = next_round
+			@players_league_info_array = players_league_info_array
+			@email_addresses = email_addresses
+	  	#mail(:to => "#{all_email_addresses}", :bcc => "#{admin_emails}", :subject => "SQUASH LEAGUE: #{p1_name}-#{p2_name} Match Scores")
+	  	mail(:to => "saichaitanya88@gmail.com", :subject => "SQUASH LEAGUE: Weekly Update")
   end
   
 end
