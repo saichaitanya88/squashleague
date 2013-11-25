@@ -21,7 +21,8 @@ module LeagueHelper
 
 	  	matches_p.each do |match|
 	  		#only want correct season
-				if match.round.season.id != p.season_id
+
+				if match.round.season.id.to_i != p.season_id.to_i
 		  		next
 	  		end
 	  		mtr = MatchesToRound.find_by_match_id(match.id)

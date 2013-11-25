@@ -169,10 +169,10 @@ class MatchController < ApplicationController
 	  			game.match_id = match.id
 	  			game.status = "completed"
 	  			
-	  			if game.player1_score != 0 && game.player2_score != 0
+	  			if !(game.player1_score == 0 && game.player2_score == 0)
 		  			game.save
 	  			end
-	  			
+	  			#debugger
 	  			game_number = game_number + 1
   		end
   		
@@ -182,12 +182,11 @@ class MatchController < ApplicationController
   			match.winner_id = match.player2_id
   		end
   		match.status = "completed"
-  		match.save
-  		#debugger
-  		t1 = Thread.new do
-  			UserMailer.score_update_email(current_user, match).deliver
-  		end
-  		
+			if match.save
+				t1 = Thread.new do
+					UserMailer.score_update_email(current_user, match).deliver
+				end
+  		end  		
   	end
   	
   	if flash.keep[:error].length == 0
