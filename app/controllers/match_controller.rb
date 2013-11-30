@@ -182,11 +182,28 @@ class MatchController < ApplicationController
   			match.winner_id = match.player2_id
   		end
   		match.status = "completed"
-			if match.save
-				t1 = Thread.new do
-					UserMailer.score_update_email(current_user, match).deliver
+  		
+  		match.save
+  		
+  		t1 = Thread.new do
+  			# sleep for 10 seconds (let the database call complete)
+  			sleep 10
+  			
+				match.reload
+  			
+				#update Post
+				player1 = Player.find(match.player1_id)
+				player2 = Player.find(match.player2_id)
+				post = Post.find_by_match_id(match.id)
+				if post.nil? 
+					post = Post.new
 				end
-  		end  		
+				post.title = "#{player1.full_name_abbr} vs. #{player2.full_name_abbr} #{match.round.season.season_name}(#{match.round.season.division.level})"
+				post.content = get_match_post_content(player1, player2, match)
+				post.match_id = match.id
+				post.save
+				UserMailer.score_update_email(current_user, match).deliver
+			end
   	end
   	
   	if flash.keep[:error].length == 0
@@ -201,4 +218,8 @@ class MatchController < ApplicationController
   		redirect_to "/league/schedule?sid=#{season_id}"
   	end
   end
+  
+	def test
+		MatchHelper.do_stuff
+	end
 end

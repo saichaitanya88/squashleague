@@ -3,8 +3,7 @@ module LeagueHelper
 	def generate_player_league_info(season_id)
 		players_league_info_array = Array.new
 		pts = PlayersToSeason.where(:season_id => season_id)
-		
-		
+	
 		pts.each do |p|
 			player = Player.find(p.player_id)
 			player_league_info = PlayerLeagueInfo.new(player.id)
@@ -15,7 +14,7 @@ module LeagueHelper
 		  	matches_p = matches_p1 + matches_p2
 			elsif matches_p1.nil? == false and matches_p2.nil? == true
 		  	matches_p = matches_p1
-			else 
+			else
 		  	matches_p = matches_p2
 			end
 
@@ -39,8 +38,10 @@ module LeagueHelper
 					else
 						player_league_info.set_league_points_against(player_league_info.league_points_against + 1)
 					end
+					puts player_league_info.to_json
 	  		end
 	  	end
+
 	  	players_league_info_array.push(player_league_info)
   	end
 

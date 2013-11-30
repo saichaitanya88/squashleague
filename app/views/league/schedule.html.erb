@@ -8,7 +8,7 @@
 				<ul class="nav nav-pills nav-stacked seasons">
 					<% @current_seasons.each do |season| %>
 					<li class="<%= @active_s[season.id] %>">
-						<a href="/league/schedule?sid=<%=season.id %>"><%=season.season_name %></a>
+						<a href="/league/schedule?sid=<%=season.id %>"><%=  "#{season.season_name} (#{season.division.division_level.split.last})"  %></a>
 					</li>
 					<% end %>
 				</ul>	
@@ -17,7 +17,7 @@
 				<div class="tab-content">
 					<% @round_info.each do |rr| %>
 					<div class="tab-pane <%= @active_ri[rr.first.round_id] %>" id="r<%= rr.first.round_id %>">
-						<h3 class="panel-title"><%= rr.first.round_name %></h3>
+						<h3 class="panel-title"><%= "#{rr.first.round_name} (#{Round.find(rr.first.round_id).round_start.strftime('%b %d, %Y')} - #{Round.find(rr.first.round_id).round_end.strftime('%b %d, %Y')})" %></h3>
 							<table class="table">
 								<thead>
 									<tr>

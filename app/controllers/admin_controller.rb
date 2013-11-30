@@ -98,7 +98,7 @@ class AdminController < ApplicationController
 			if Season.find_by_season_name(season_name)
 				flash.now[:error] = "A Season with this name already exists."
 			end
-			debugger
+			#debugger
 			sh = (Schedule_Helper.new).generate_schedule(players, matches_per_player_pair.to_i, grace_period.to_i, season_start, season_name, division_id.to_i)
 			flash.keep[:success] = "New Season Created!"		
 		end
@@ -201,7 +201,7 @@ class AdminController < ApplicationController
 	
 	def manage_users
 		not_admin(cookies[:remember_token])
-		@users = User.where(:role => "standard")
+		@users = User.all #.where(:role => "standard")
 		@players = Player.all
 	end
 	

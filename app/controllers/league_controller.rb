@@ -6,8 +6,10 @@ class LeagueController < ApplicationController
 		if !(sid.nil? || sid.empty?)
 			@player_info = generate_player_league_info(sid)
 			@active_s[sid.to_i] = "active"
+			@division_name = Season.find(sid).division.division_level
 		else
 			@player_info = Array.new
+			@division_name = ""
 		end
   end
 

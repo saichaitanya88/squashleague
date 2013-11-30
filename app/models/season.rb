@@ -44,4 +44,13 @@ class Season < ActiveRecord::Base
 #		end
 	end
 	
+	def division
+		std = SeasonsToDivision.find_by_season_id(id)
+		if std.nil?
+			return Division.new
+		else
+			return Division.find(std.division_id)
+		end
+	end
+	
 end

@@ -56,7 +56,7 @@ class Schedule_Helper
 			pts = PlayersToSeason.new
 			pts.status = "active"
 			pts.season_id = db_season.id
-			debugger
+			#debugger
 			pts.player_id = player.id
 			pts.save
 		end
@@ -237,7 +237,7 @@ class Schedule_Helper
 			end
 			return false
 		rescue
-			debugger
+			#debugger
 			return false
 		end
 	end

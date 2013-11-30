@@ -44,6 +44,11 @@ SquashLeague::Application.routes.draw do
   post "users/update_details"
   post "users/update_password"
   
+  post "post/create"
+  get "post/show"
+  get "post/new"
+  patch "post/update"
+  delete "post/delete"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

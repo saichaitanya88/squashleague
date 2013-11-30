@@ -7,4 +7,5 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include AdminHelper
   include LeagueHelper
+  include MatchHelper
 end
