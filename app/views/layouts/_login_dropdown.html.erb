@@ -1,13 +1,13 @@
 <% if signed_in? %>
-	<% if is_admin? %>
-  	<li><%= link_to "Admin Dashboard", admin_admin_dashboard_path %></li>
-  <% end %>
-  <li><%= link_to "User Dashboard", users_dashboard_main_path %></li>
   <li id="fat-menu" class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
       <%= @current_user.email %> <b class="caret"></b>
     </a>
     <ul class="dropdown-menu">
+			<% if is_admin? %>
+				<li><%= link_to "Admin Dashboard", admin_admin_dashboard_path %></li>
+			<% end %>
+			<li><%= link_to "User Dashboard", users_dashboard_main_path %></li>
       <li><%= link_to "Settings", users_settings_path %></li>
       <li class="divider"></li>
       <li>

@@ -4,56 +4,73 @@
   </div>
   <div class="panel-body">
 		<div class="row">
-			<div class="col-md-2">
+			<div class="col-xs-12">
+					<ul class="col-md-offset-2 breadcrumb rounds visible-xs visible-sm">
+						<% @current_seasons.each do |season| %>
+						<li class="<%= @active_s[season.id] %>">
+							<a href="/league/schedule?sid=<%=season.id %>"><%=  "#{season.season_name} (#{season.division.division_level.split.last})"  %></a>
+						</li>
+						<% end %>
+					</ul>
+			<div/>
+		
+			<div class="col-xs-12">
+				<% if @round_info.count > 0 %>
+				<ul class="col-md-offset-2 breadcrumb rounds">
+					<% @round_info.each do |ri| %>
+					<li id="r<%=ri.first.round_id %>" class="<%= @active_ri[ri.first.round_id] %>">
+						<a href="#" onclick="showpane('r<%= ri.first.round_id %>')" ><%= ri.first.round_name %></a>
+					</li>
+					<% end %>
+				</ul>
+				<% end %>
+			</div>	
+
+			<div class="col-md-2 visible-lg visible-md">
 				<ul class="nav nav-pills nav-stacked seasons">
 					<% @current_seasons.each do |season| %>
 					<li class="<%= @active_s[season.id] %>">
 						<a href="/league/schedule?sid=<%=season.id %>"><%=  "#{season.season_name} (#{season.division.division_level.split.last})"  %></a>
 					</li>
 					<% end %>
-				</ul>	
+				</ul>
 			</div>
-			<div class="col-md-8">
-				<div class="tab-content">
-					<% @round_info.each do |rr| %>
-					<div class="tab-pane <%= @active_ri[rr.first.round_id] %>" id="r<%= rr.first.round_id %>">
-						<h3 class="panel-title"><%= "#{rr.first.round_name} (#{Round.find(rr.first.round_id).round_start.strftime('%b %d, %Y')} - #{Round.find(rr.first.round_id).round_end.strftime('%b %d, %Y')})" %></h3>
-							<table class="table">
-								<thead>
-									<tr>
-										<th class="col-md-4">Players</th>
-										<th class="col-md-4">Results</th>
-										<th class="col-md-4">Winner</th>
-									</tr>
-								</thead>
-								<tbody>
-								<% rr.each do |m| %>
-									<tr>
-										<td><%= m.players %></td>
-										<% if (m.results.include? "LINK") && user_can_edit_match(m.match_id, @user)  %>
-											<td><%= link_to "Submit Score", match_show_path( :id => m.match_id )%></td>
-										<% elsif (m.results.include? "LINK") && !user_can_edit_match(m.match_id, @user) %>
-											<td>---</td>
-										<% else %>
-											<td><%= m.results %></td>
-										<% end %>
-										<td class="col-md-4"><%= Match.find(m.match_id).get_winner_full_name %></td>
-									</tr>							
-								<% end %>
-								</tbody>
-							</table>
-						</div>
-					<% end %>
-				</div>
-			</div>
-			<div class="col-md-2">
-				<ul class="nav nav-pills nav-stacked rounds">
-					<% @round_info.each do |ri| %>
-					<li id="r<%=ri.first.round_id %>" class="<%= @active_ri[ri.first.round_id] %>">
-						<a onclick="showpane('r<%= ri.first.round_id %>')" ><%= ri.first.round_name %></a>
-					</li>
-					<% end %>
-				</ul>	
+
+			<div class="col-md-10 col-xs-12">
+					<div class="tab-content">
+						<% if @round_info.count == 0 %>
+							Please select a season.
+						<% end %>
+						<% @round_info.each do |rr| %>
+						<div class="tab-pane <%= @active_ri[rr.first.round_id] %>" id="r<%= rr.first.round_id %>">
+							<h3 class="panel-title"><%= "#{rr.first.round_name} (#{Round.find(rr.first.round_id).round_start.strftime('%b %d, %Y')} - #{Round.find(rr.first.round_id).round_end.strftime('%b %d, %Y')})" %></h3>
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="col-md-4 col-xs-3">Players</th>
+											<th class="col-md-4 col-xs-6">Results</th>
+											<th class="col-md-4 col-xs-3">Winner</th>
+										</tr>
+									</thead>
+									<tbody>
+									<% rr.each do |m| %>
+										<tr>
+											<td class="col-md-4 col-xs-4"><%= m.players %></td>
+											<% if (m.results.include? "LINK") && user_can_edit_match(m.match_id, @user)  %>
+												<td class="col-md-4 col-xs-4"><%= link_to "Submit Score", match_show_path( :id => m.match_id )%></td>
+											<% elsif (m.results.include? "LINK") && !user_can_edit_match(m.match_id, @user) %>
+												<td class="col-md-4 col-xs-4">---</td>
+											<% else %>
+												<td class="col-md-4 col-xs-4"><%= m.results %></td>
+											<% end %>
+											<td class="col-md-4 col-xs-4"><%= Match.find(m.match_id).get_winner_full_name %></td>
+										</tr>
+									<% end %>
+									</tbody>
+								</table>
+							</div>
+						<% end %>
+					</div>
 			</div>
 		</div>
   </div>

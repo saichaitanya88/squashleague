@@ -5,31 +5,26 @@
   <div class="panel-body">
 		<div class="row">
 			<div class="col-md-offset-2">
-				<%= form_for(:session, :url => url_for(:action => 'create'), :html => {:class => "form-horizontal"}) do |f| %>
-
+				<%= form_for(:session, :url => url_for(:action => "create"), :html => {:class => "form-horizontal"}) do |f| %>
 					<div class="form-group">
-						<label class="control-label col-md-1">Email</label>
-						<div class="col-md-6">
+						<label class="control-label col-md-1 col-sm-3 col-xs-3">Email</label>
+						<div class="col-md-6 col-sm-6 col-xs-6">
 							<%= f.text_field :email, :class=> "form-control", :placeholder => "Email"  %>
 						</div>
 					</div>    
-		
 					<div class="form-group">
-						<label class="control-label col-md-1">Password</label>
-						<div class="col-md-6">
+						<label class="control-label col-md-1 col-sm-3 col-xs-3">Password</label>
+						<div class="col-md-6 col-xs-6 col-sm-6">
 							<%= f.password_field :password, :class=> "form-control", :placeholder => "Password"  %>
 						</div>
 					</div>
 		
 					<div class="form-group">
-						<div class="col-md-offset-1 col-md-1">
+						<div class="col-md-offset-1 col-md-1 col-xs-offset-3 col-xs-1 col-sm-offset-3 col-sm-1">
 							<%= f.submit "Sign in", class: "btn btn-large btn-default" %>	
 						</div>
 					</div>
-				  
-				  
 				<% end %>
-
 			</div>
 		</div>	
   </div>
